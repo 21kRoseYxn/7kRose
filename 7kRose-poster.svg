@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="1760" viewBox="0 0 1080 1760">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="22%" r="85%">
+      <stop offset="0%" stop-color="#1b1b34"/>
+      <stop offset="55%" stop-color="#0d0d18"/>
+      <stop offset="100%" stop-color="#07070d"/>
+    </radialGradient>
+    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="hit" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="holdblue" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0.5"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="7" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="16" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1080" height="1760" fill="url(#bg)"/>
+
+  <!-- title -->
+  <text x="540" y="225" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-weight="800" font-size="172" letter-spacing="2" fill="url(#brand)" filter="url(#softglow)">7kRose</text>
+  <text x="540" y="290" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-style="italic" font-size="40" letter-spacing="3" fill="#9aa0b5">an osu! fangame</text>
+
+  <!-- playfield -->
+  <rect x="300" y="350" width="480" height="812" rx="20" fill="#ffffff" fill-opacity="0.025" stroke="#ffffff" stroke-opacity="0.07"/>
+  <line x1="320" y1="350" x2="320" y2="1162" stroke="#ffffff" stroke-opacity="0.06"/>
+  <line x1="430" y1="350" x2="430" y2="1162" stroke="#ffffff" stroke-opacity="0.06"/>
+  <line x1="540" y1="350" x2="540" y2="1162" stroke="#ffffff" stroke-opacity="0.06"/>
+  <line x1="650" y1="350" x2="650" y2="1162" stroke="#ffffff" stroke-opacity="0.06"/>
+  <line x1="760" y1="350" x2="760" y2="1162" stroke="#ffffff" stroke-opacity="0.06"/>
+
+  <!-- hold note (lane 3, white) -->
+  <rect x="564" y="470" width="62" height="250" rx="14" fill="url(#holdblue)"/>
+
+  <!-- falling notes -->
+  <g filter="url(#glow)">
+    <rect x="332" y="430" width="86" height="34" rx="9" fill="#3b82f6"/>
+    <rect x="332" y="590" width="86" height="34" rx="9" fill="#3b82f6"/>
+    <rect x="332" y="800" width="86" height="34" rx="9" fill="#3b82f6"/>
+    <rect x="332" y="1010" width="86" height="34" rx="9" fill="#3b82f6"/>
+
+    <rect x="442" y="500" width="86" height="34" rx="9" fill="#e2e8f0"/>
+    <rect x="442" y="700" width="86" height="34" rx="9" fill="#e2e8f0"/>
+    <rect x="442" y="930" width="86" height="34" rx="9" fill="#e2e8f0"/>
+
+    <rect x="564" y="470" width="62" height="34" rx="9" fill="#e2e8f0"/>
+    <rect x="552" y="700" width="86" height="34" rx="9" fill="#e2e8f0"/>
+    <rect x="552" y="990" width="86" height="34" rx="9" fill="#e2e8f0"/>
+
+    <rect x="662" y="450" width="86" height="34" rx="9" fill="#3b82f6"/>
+    <rect x="662" y="640" width="86" height="34" rx="9" fill="#3b82f6"/>
+    <rect x="662" y="880" width="86" height="34" rx="9" fill="#3b82f6"/>
+  </g>
+
+  <!-- receptors + hit line -->
+  <g>
+    <rect x="332" y="1096" width="86" height="40" rx="9" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.7"/>
+    <rect x="442" y="1096" width="86" height="40" rx="9" fill="none" stroke="#e2e8f0" stroke-width="3" opacity="0.7"/>
+    <rect x="552" y="1096" width="86" height="40" rx="9" fill="none" stroke="#e2e8f0" stroke-width="3" opacity="0.7"/>
+    <rect x="662" y="1096" width="86" height="40" rx="9" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.7"/>
+  </g>
+  <rect x="300" y="1150" width="480" height="6" rx="3" fill="url(#hit)" filter="url(#glow)"/>
+
+  <!-- tagline -->
+  <text x="540" y="1255" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-weight="800" font-size="50" fill="#f0f0f6">4-key top-scroll rhythm</text>
+  <text x="540" y="1300" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-size="30" fill="#9aa0b5">7 tracks &#183; hold the line &#183; beat your best</text>
+
+  <!-- features -->
+  <g font-family="'Segoe UI',Arial,sans-serif" font-size="30" fill="#d6d8e3">
+    <circle cx="320" cy="1372" r="7" fill="#3b82f6"/><text x="345" y="1382">7 tracks &#183; Easy / Medium / Hard</text>
+    <circle cx="320" cy="1424" r="7" fill="#ec4899"/><text x="345" y="1434">2K &#183; 4K &#183; 6K modes, same note density</text>
+    <circle cx="320" cy="1476" r="7" fill="#a855f7"/><text x="345" y="1486">Hold notes, combos &amp; accuracy grades</text>
+    <circle cx="320" cy="1528" r="7" fill="#22d3ee"/><text x="345" y="1538">Practice any section &#183; 0.7&#8211;1&#215; speed</text>
+    <circle cx="320" cy="1580" r="7" fill="#34d399"/><text x="345" y="1590">Custom themes, lane colors &amp; backgrounds</text>
+  </g>
+
+  <!-- CTA -->
+  <rect x="290" y="1642" width="500" height="74" rx="37" fill="url(#brand)" filter="url(#glow)"/>
+  <polygon points="338,1670 338,1688 356,1679" fill="#0b0b14"/>
+  <text x="556" y="1689" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-weight="800" font-size="30" fill="#0b0b14">Open 7kRose.html to play</text>
+</svg>

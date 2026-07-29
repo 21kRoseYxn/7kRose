@@ -1,0 +1,10 @@
+# Tracks whose artists haven't granted permission yet - kept locally, never published
+_unlicensed/
+
+# Backups and generated scratch
+*.bak
+charts.js.day1-backup
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

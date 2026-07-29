@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <radialGradient id="bg" cx="60%" cy="30%" r="90%">
+      <stop offset="0%" stop-color="#1b1b34"/>
+      <stop offset="55%" stop-color="#0d0d18"/>
+      <stop offset="100%" stop-color="#07070d"/>
+    </radialGradient>
+    <linearGradient id="brand" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="hit" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="50%" stop-color="#a855f7"/>
+      <stop offset="100%" stop-color="#ec4899"/>
+    </linearGradient>
+    <linearGradient id="holdwhite" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#e2e8f0" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#e2e8f0" stop-opacity="0.45"/>
+    </linearGradient>
+    <filter id="glow" x="-60%" y="-60%" width="220%" height="220%">
+      <feGaussianBlur stdDeviation="6" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <filter id="softglow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="14" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+
+  <!-- LEFT: brand + copy -->
+  <text x="112" y="250" font-family="'Segoe UI',Arial,sans-serif" font-weight="800" font-size="150" letter-spacing="2" fill="url(#brand)" filter="url(#softglow)">7kRose</text>
+  <text x="120" y="312" font-family="'Segoe UI',Arial,sans-serif" font-style="italic" font-size="38" letter-spacing="3" fill="#9aa0b5">an osu! fangame</text>
+
+  <text x="112" y="438" font-family="'Segoe UI',Arial,sans-serif" font-weight="800" font-size="52" fill="#f0f0f6">4-key top-scroll rhythm</text>
+  <text x="114" y="486" font-family="'Segoe UI',Arial,sans-serif" font-size="28" fill="#9aa0b5">7 tracks &#183; hold the line &#183; beat your best</text>
+
+  <g font-family="'Segoe UI',Arial,sans-serif" font-size="30" fill="#d6d8e3">
+    <circle cx="130" cy="578" r="7" fill="#3b82f6"/><text x="165" y="588">7 tracks &#183; Easy / Medium / Hard</text>
+    <circle cx="130" cy="642" r="7" fill="#ec4899"/><text x="165" y="652">2K &#183; 4K &#183; 6K modes, same note density</text>
+    <circle cx="130" cy="706" r="7" fill="#a855f7"/><text x="165" y="716">Hold notes, combos &amp; accuracy grades</text>
+    <circle cx="130" cy="770" r="7" fill="#22d3ee"/><text x="165" y="780">Practice any section &#183; 0.7&#8211;1&#215; speed</text>
+    <circle cx="130" cy="834" r="7" fill="#34d399"/><text x="165" y="844">Custom themes, lane colors &amp; backgrounds</text>
+  </g>
+
+  <rect x="112" y="912" width="520" height="74" rx="37" fill="url(#brand)" filter="url(#glow)"/>
+  <polygon points="158,940 158,958 176,949" fill="#0b0b14"/>
+  <text x="372" y="959" text-anchor="middle" font-family="'Segoe UI',Arial,sans-serif" font-weight="800" font-size="30" fill="#0b0b14">Open 7kRose.html to play</text>
+
+  <!-- RIGHT: playfield -->
+  <rect x="1230" y="95" width="480" height="900" rx="20" fill="#ffffff" fill-opacity="0.025" stroke="#ffffff" stroke-opacity="0.07"/>
+  <line x1="1250" y1="95" x2="1250" y2="995" stroke="#ffffff" stroke-opacity="0.06"/>
+  <line x1="1360" y1="95" x2="1360" y2="995" stroke="#ffffff" stroke-opacity="0.06"/>
+  <line x1="1470" y1="95" x2="1470" y2="995" stroke="#ffffff" stroke-opacity="0.06"/>
+  <line x1="1580" y1="95" x2="1580" y2="995" stroke="#ffffff" stroke-opacity="0.06"/>
+  <line x1="1690" y1="95" x2="1690" y2="995" stroke="#ffffff" stroke-opacity="0.06"/>
+
+  <rect x="1494" y="300" width="62" height="210" rx="14" fill="url(#holdwhite)"/>
+
+  <g filter="url(#glow)">
+    <rect x="1262" y="170" width="86" height="34" rx="9" fill="#3b82f6"/>
+    <rect x="1262" y="340" width="86" height="34" rx="9" fill="#3b82f6"/>
+    <rect x="1262" y="560" width="86" height="34" rx="9" fill="#3b82f6"/>
+    <rect x="1262" y="800" width="86" height="34" rx="9" fill="#3b82f6"/>
+
+    <rect x="1372" y="240" width="86" height="34" rx="9" fill="#e2e8f0"/>
+    <rect x="1372" y="450" width="86" height="34" rx="9" fill="#e2e8f0"/>
+    <rect x="1372" y="700" width="86" height="34" rx="9" fill="#e2e8f0"/>
+
+    <rect x="1494" y="300" width="62" height="34" rx="9" fill="#e2e8f0"/>
+    <rect x="1482" y="510" width="86" height="34" rx="9" fill="#e2e8f0"/>
+    <rect x="1482" y="760" width="86" height="34" rx="9" fill="#e2e8f0"/>
+
+    <rect x="1592" y="200" width="86" height="34" rx="9" fill="#3b82f6"/>
+    <rect x="1592" y="410" width="86" height="34" rx="9" fill="#3b82f6"/>
+    <rect x="1592" y="640" width="86" height="34" rx="9" fill="#3b82f6"/>
+    <rect x="1592" y="860" width="86" height="34" rx="9" fill="#3b82f6"/>
+  </g>
+
+  <g>
+    <rect x="1262" y="930" width="86" height="40" rx="9" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.7"/>
+    <rect x="1372" y="930" width="86" height="40" rx="9" fill="none" stroke="#e2e8f0" stroke-width="3" opacity="0.7"/>
+    <rect x="1482" y="930" width="86" height="40" rx="9" fill="none" stroke="#e2e8f0" stroke-width="3" opacity="0.7"/>
+    <rect x="1592" y="930" width="86" height="40" rx="9" fill="none" stroke="#3b82f6" stroke-width="3" opacity="0.7"/>
+  </g>
+  <rect x="1230" y="984" width="480" height="6" rx="3" fill="url(#hit)" filter="url(#glow)"/>
+</svg>

@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Neon Mania — 4K Top-Scroll Rhythm</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="bgLayer"></div>
+<div id="bgDimLayer"></div>
+
+<!-- ===================== MENU ===================== -->
+<div id="menu" class="screen active">
+  <h1>7kRose</h1>
+  <div class="tagline">an osu! fangame</div>
+  <div class="sub">4-key top-scroll rhythm · 7 tracks · hold the long notes<br>Default keys D F J K — rebind them in Settings.</div>
+  <div class="menu-controls">
+    <div class="diffbar optbar" id="diffbar"><span class="optlabel">DIFF</span>
+      <button class="diffbtn easy" data-diff="easy">EASY</button>
+      <button class="diffbtn medium" data-diff="medium">MEDIUM</button>
+      <button class="diffbtn hard" data-diff="hard">HARD</button>
+    </div>
+    <div class="optbar" id="keysbar"><span class="optlabel">KEYS</span>
+      <button class="optbtn" data-k="2">2K</button>
+      <button class="optbtn" data-k="4">4K</button>
+      <button class="optbtn" data-k="6">6K</button>
+    </div>
+    <div class="optbar" id="speedbar"><span class="optlabel">SPEED</span>
+      <button class="optbtn" data-s="1">1x</button>
+      <button class="optbtn" data-s="0.9">0.9x</button>
+      <button class="optbtn" data-s="0.8">0.8x</button>
+      <button class="optbtn" data-s="0.7">0.7x</button>
+    </div>
+    <div class="mini" style="text-align:center">Remember that using slower speeds disables score saving.</div>
+  </div>
+  <div class="toolbar">
+    <button class="btn" id="settingsBtn">⚙ Settings &amp; Keybinds</button>
+    <button class="btn" id="creditsBtn">♪ Credits</button>
+  </div>
+  <div class="songs" id="songs"></div>
+</div>
+
+<!-- ===================== SETTINGS ===================== -->
+<div id="settings" class="screen">
+  <h1>SETTINGS</h1>
+  <div class="sub">Click a key, then press the new key to rebind. Lanes are left → right.</div>
+  <div class="card">
+    <div class="optbar" id="kmEdit"><span class="optlabel">KEYS</span>
+      <button class="optbtn" data-k="2">2K</button>
+      <button class="optbtn" data-k="4">4K</button>
+      <button class="optbtn" data-k="6">6K</button>
+    </div>
+    <div class="keys-row" id="keysRow"></div>
+    <div class="field">
+      <label>Lane colors <button class="linkbtn" id="resetColors">reset to default</button></label>
+      <div class="colors-row" id="colorsRow"></div>
+    </div>
+    <div class="field">
+      <label>Scroll speed <span id="speedVal"></span></label>
+      <input type="range" id="speed" min="3" max="20" step="1">
+      <span class="mini">Higher = notes fall faster.</span>
+    </div>
+    <div class="field">
+      <label>Audio offset <span id="offVal"></span></label>
+      <input type="range" id="offset" min="-150" max="150" step="5">
+      <span class="mini">If notes feel early/late, nudge this. + = notes later.</span>
+    </div>
+    <div class="field"><div class="toggle-row"><label for="hitToggle">Hit sounds</label><input type="checkbox" id="hitToggle"></div></div>
+
+    <div class="divider"></div>
+    <div class="section-label">THEME</div>
+    <div class="optbar" id="themePresets"><span class="optlabel">PRESET</span>
+      <button class="optbtn" data-theme="neon">Neon</button>
+      <button class="optbtn" data-theme="sunset">Sunset</button>
+      <button class="optbtn" data-theme="mono">Mono</button>
+      <button class="optbtn" data-theme="vapor">Vapor</button>
+    </div>
+    <div class="field">
+      <label>Accent colors</label>
+      <div class="accent-row">
+        <div class="colorpick"><div class="lbl">Primary</div><input type="color" id="accent1"></div>
+        <div class="colorpick"><div class="lbl">Secondary</div><input type="color" id="accent2"></div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Note size <span id="noteSizeVal"></span></label>
+      <input type="range" id="noteSize" min="12" max="34" step="1">
+    </div>
+    <div class="field">
+      <label>Background image</label>
+      <div style="display:flex;gap:8px">
+        <button class="btn" id="importBgBtn" style="flex:1">Import image…</button>
+        <button class="btn" id="clearBgBtn" style="flex:1">Clear</button>
+      </div>
+      <input type="file" id="bgInput" accept="image/*" hidden>
+    </div>
+    <div class="field">
+      <label>Background dim <span id="dimVal"></span></label>
+      <input type="range" id="bgDimRange" min="0" max="90" step="5">
+      <span class="mini">Darken your image so notes stay readable.</span>
+    </div>
+
+    <button class="btn primary" id="settingsBack">Back to songs</button>
+  </div>
+</div>
+
+<!-- ===================== CREDITS ===================== -->
+<div id="credits" class="screen">
+  <h1>CREDITS</h1>
+  <div class="sub">Every track here is used with its artist's permission.<br>Please support them at the links below.</div>
+  <div class="card">
+    <div class="section-label">MUSIC</div>
+      <div class="credit">
+        <div class="credit-track">Armageddon</div>
+        <div class="credit-artist">Zodin</div>
+        <a class="credit-link" href="https://www.newgrounds.com/audio/listen/548713" target="_blank" rel="noopener noreferrer">https://www.newgrounds.com/audio/listen/548713</a>
+        <div class="credit-lic">Free to use with credit</div>
+      </div>
+      <div class="credit">
+        <div class="credit-track">Grizzly (WIP)</div>
+        <div class="credit-artist">Envy</div>
+        <a class="credit-link" href="https://www.newgrounds.com/audio/listen/467065" target="_blank" rel="noopener noreferrer">https://www.newgrounds.com/audio/listen/467065</a>
+        <div class="credit-lic">Free to use with credit</div>
+      </div>
+      <div class="credit">
+        <div class="credit-track">Silent Hill (Dubstep)</div>
+        <div class="credit-artist">Aydin-Jewelz123</div>
+        <a class="credit-link" href="https://www.newgrounds.com/audio/listen/386900" target="_blank" rel="noopener noreferrer">https://www.newgrounds.com/audio/listen/386900</a>
+        <div class="credit-lic">Free to use with credit</div>
+      </div>
+      <div class="credit">
+        <div class="credit-track">{Rose}</div>
+        <div class="credit-artist">cornandbeans</div>
+        <a class="credit-link" href="https://www.newgrounds.com/audio/listen/65711" target="_blank" rel="noopener noreferrer">https://www.newgrounds.com/audio/listen/65711</a>
+        <div class="credit-lic">Free to use with credit</div>
+      </div>
+      <div class="credit">
+        <div class="credit-track">Nostalgia (original mix)</div>
+        <div class="credit-artist">Acid-Notation</div>
+        <a class="credit-link" href="https://www.youtube.com/watch?v=dtpzCffp_y8" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=dtpzCffp_y8</a>
+        <div class="credit-lic">Free to use with credit and source link</div>
+      </div>
+      <div class="credit">
+        <div class="credit-track">Turbo Strawberry</div>
+        <div class="credit-artist">Acid-Notation</div>
+        <a class="credit-link" href="https://www.youtube.com/watch?v=5OB-PHV_3Zo" target="_blank" rel="noopener noreferrer">https://www.youtube.com/watch?v=5OB-PHV_3Zo</a>
+        <div class="credit-lic">Free to use with credit and source link</div>
+      </div>
+      <div class="credit">
+        <div class="credit-track">Heaven (remix)</div>
+        <div class="credit-artist">Envy</div>
+        <a class="credit-link" href="https://www.newgrounds.com/audio/listen/105753" target="_blank" rel="noopener noreferrer">https://www.newgrounds.com/audio/listen/105753</a>
+        <div class="credit-lic">Free to use with credit</div>
+      </div>
+    <div class="divider"></div>
+    <div class="section-label">GAME</div>
+    <div class="credit">
+      <div class="credit-track">7kRose</div>
+      <div class="credit-artist">Built by Josh</div>
+      <div class="credit-lic">An osu! fangame. Not affiliated with or endorsed by osu! or ppy Pty Ltd.</div>
+    </div>
+    <div class="mini" style="margin-top:12px">Charts generated from the audio with chartgen.py, included in the repository.</div>
+    <button class="btn primary" id="creditsBack" style="margin-top:14px">Back to songs</button>
+  </div>
+</div>
+
+<!-- ===================== GAME ===================== -->
+<div id="game" class="screen">
+  <div id="stage">
+    <canvas id="cv"></canvas>
+    <div id="hud"><div id="score">0</div><div id="acc">100.00%</div></div>
+    <div id="combo"></div>
+    <div id="judge"></div>
+    <div id="modeTag"></div>
+    <div id="pauseHint">Esc = pause</div>
+    <div id="pauseMenu">
+      <h1>PAUSED</h1>
+      <button class="btn primary" id="resumeBtn">Resume</button>
+      <button class="btn" id="restartBtn">Restart</button>
+      <button class="btn" id="quitBtn">Quit to menu</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== RESULTS ===================== -->
+<div id="results" class="screen">
+  <h1>RESULTS</h1>
+  <div class="card">
+    <div id="songTitle" class="mini" style="margin-bottom:6px"></div>
+    <div class="newbest" id="newBest">★ NEW BEST ★</div>
+    <div class="grade" id="gradeText">S</div>
+    <div class="res-acc" id="resAcc">100.00%</div>
+    <div class="res-grid" id="resGrid"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn primary" id="resRetry" style="flex:1">Retry</button>
+      <button class="btn" id="resMenu" style="flex:1">Menu</button>
+    </div>
+  </div>
+</div>
+
+<div id="practiceModal" class="modal">
+  <div class="modal-card">
+    <h2>Practice — <span id="pmTitle"></span></h2>
+    <div class="mini">Enter times as m:ss or seconds. The section loops until you press Esc.</div>
+    <div class="prow"><label>From</label><input id="pmFrom" placeholder="0:00"></div>
+    <div class="prow"><label>To</label><input id="pmTo" placeholder="end (optional)"></div>
+    <div class="mini" id="pmErr" style="color:#f87171;min-height:14px"></div>
+    <div style="display:flex;gap:10px">
+      <button class="btn primary" id="pmStart" style="flex:1">Start practice</button>
+      <button class="btn" id="pmCancel" style="flex:1">Cancel</button>
+    </div>
+  </div>
+</div>
+
+<div id="overlay"><div class="spinner"></div><div id="overlayText">Loading…</div></div>
+<audio id="player" preload="auto"></audio>
+
+<script src="charts.js"></script>
+<script>
+"use strict";
+/* ============================================================
+   NEON MANIA — fixed 7-track 4K top-scroll rhythm game
+   Charts are pre-analyzed (FFT onset + hold detection) and
+   baked in below. Audio plays from song1.mp3 … song7.mp3
+   sitting next to this file.
+   ============================================================ */
+
+// Chart data lives in charts.js (editable). Loaded via <script src="charts.js"> above.
+const SONGS = window.SONGS || [];
+
+const DIFF_COLORS={easy:'#34d399',medium:'#fbbf24',hard:'#f87171'};
+// Default lane color for key mode K, lane i — read from the CSS variable --laneK-i in style.css.
+function defaultLaneColor(K,i){
+  const v=getComputedStyle(document.documentElement).getPropertyValue('--lane'+K+'-'+i).trim();
+  return v || '#3b82f6';
+}
+// Resolved lane colors = player override (from Settings) if set, else the CSS default.
+function laneColors(K){
+  const ov = settings.laneColors && settings.laneColors[K];
+  const arr=[];
+  for(let i=0;i<K;i++) arr.push((ov && ov[i]) ? ov[i] : defaultLaneColor(K,i));
+  return arr;
+}
+let curK=4, curColors=['#3b82f6','#e2e8f0','#e2e8f0','#3b82f6'];
+
+// ---- settings ----
+const DEFAULTS={ binds:{2:['f','j'],4:['d','f','j','k'],6:['s','d','f','j','k','l']},
+  laneColors:{2:[],4:[],6:[]},   // per-lane overrides; empty entry = use CSS default
+  accent:null, accent2:null,     // null = use the CSS default from style.css
+  noteSize:20, bgDim:0.35,
+  speed:11, offset:0, difficulty:'medium', keymode:4, speedMult:1, hitsound:true };
+let editK=4;
+let settings=loadSettings();
+function loadSettings(){
+  let s=null; try{ s=JSON.parse(localStorage.getItem('neonmania_settings')); }catch(e){}
+  const out=JSON.parse(JSON.stringify(DEFAULTS));
+  if(s){
+    if(s.binds) out.binds=Object.assign(out.binds,s.binds);
+    else if(Array.isArray(s.keys)&&s.keys.length===4) out.binds[4]=s.keys.slice();
+    if(s.laneColors) out.laneColors=Object.assign(out.laneColors,s.laneColors);
+    ['accent','accent2','noteSize','bgDim','speed','offset','difficulty','keymode','speedMult','hitsound'].forEach(k=>{ if(s[k]!==undefined) out[k]=s[k]; });
+  }
+  [2,4,6].forEach(K=>{ if(!Array.isArray(out.binds[K])||out.binds[K].length!==K) out.binds[K]=DEFAULTS.binds[K].slice(); });
+  return out;
+}
+function saveSettings(){ localStorage.setItem('neonmania_settings', JSON.stringify(settings)); }
+
+/* ---------------- THEME + BACKGROUND ---------------- */
+function cssVar(name){ return getComputedStyle(document.documentElement).getPropertyValue(name).trim(); }
+function applyTheme(){
+  const r=document.documentElement;
+  if(settings.accent)  r.style.setProperty('--accent', settings.accent);  else r.style.removeProperty('--accent');
+  if(settings.accent2) r.style.setProperty('--accent2', settings.accent2); else r.style.removeProperty('--accent2');
+}
+let bgData=null;
+function loadBg(){ try{ bgData=localStorage.getItem('neonmania_bg'); }catch(e){ bgData=null; } applyBg(); }
+function applyBg(){
+  const layer=document.getElementById('bgLayer'), dim=document.getElementById('bgDimLayer');
+  if(bgData){ layer.style.backgroundImage='url('+bgData+')'; document.body.classList.add('has-bg'); dim.style.opacity=settings.bgDim; }
+  else { layer.style.backgroundImage=''; document.body.classList.remove('has-bg'); }
+}
+function importBg(file){
+  const rd=new FileReader();
+  rd.onload=()=>{ const img=new Image(); img.onload=()=>{
+    // downscale so it fits in browser storage
+    const max=1920; let w=img.width, h=img.height;
+    if(w>max){ h=Math.round(h*max/w); w=max; }
+    const c=document.createElement('canvas'); c.width=w; c.height=h;
+    c.getContext('2d').drawImage(img,0,0,w,h);
+    let data=c.toDataURL('image/jpeg',0.85);
+    try{ localStorage.setItem('neonmania_bg',data); bgData=data; applyBg(); }
+    catch(err){ alert('That image is too large to save. Try a smaller one.'); }
+  }; img.onerror=()=>alert('Could not read that image file.'); img.src=rd.result; };
+  rd.readAsDataURL(file);
+}
+function clearBg(){ try{ localStorage.removeItem('neonmania_bg'); }catch(e){} bgData=null; applyBg(); }
+
+const PRESETS={
+  neon:  {accent:'#3b82f6', accent2:'#ec4899', lanes:null},
+  sunset:{accent:'#f97316', accent2:'#ef4444', lanes:{2:['#f59e0b','#ef4444'],4:['#f59e0b','#fde68a','#fde68a','#ef4444'],6:['#f59e0b','#fb923c','#fde68a','#fde68a','#fb7185','#ef4444']}},
+  mono:  {accent:'#94a3b8', accent2:'#e2e8f0', lanes:{2:['#94a3b8','#e2e8f0'],4:['#64748b','#e2e8f0','#e2e8f0','#64748b'],6:['#475569','#94a3b8','#e2e8f0','#e2e8f0','#94a3b8','#475569']}},
+  vapor: {accent:'#a855f7', accent2:'#22d3ee', lanes:{2:['#a855f7','#22d3ee'],4:['#a855f7','#f0abfc','#67e8f9','#22d3ee'],6:['#a855f7','#c084fc','#f0abfc','#67e8f9','#22d3ee','#0ea5e9']}}
+};
+function applyPreset(name){
+  const p=PRESETS[name]; if(!p) return;
+  settings.accent=p.accent; settings.accent2=p.accent2;
+  settings.laneColors = p.lanes ? {2:p.lanes[2].slice(),4:p.lanes[4].slice(),6:p.lanes[6].slice()} : {2:[],4:[],6:[]};
+  saveSettings(); applyTheme(); renderSettings();
+}
+
+// ---- high scores (per song + difficulty + keymode) ----
+function hsKey(id,diff,K){ return 'neonmania_hs_'+id+'_'+diff+'_'+K+'k'; }
+function getHS(id,diff,K){ try{ return JSON.parse(localStorage.getItem(hsKey(id,diff,K)))||null; }catch(e){ return null; } }
+function setHS(id,diff,K,rec){ localStorage.setItem(hsKey(id,diff,K), JSON.stringify(rec)); }
+
+const GRADE_COLORS={SS:'#fde047',S:'#fde047',A:'#34d399',B:'#22d3ee',C:'#a78bfa',D:'#f87171'};
+function gradeFor(acc){ return acc>=99?'SS':acc>=95?'S':acc>=90?'A':acc>=80?'B':acc>=70?'C':'D'; }
+function show(id){ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
+
+let lastIdx=0;
+
+/* ---------------- MENU ---------------- */
+const songsEl=document.getElementById('songs');
+function renderMenu(){
+  document.querySelectorAll('#diffbar .diffbtn').forEach(b=>b.classList.toggle('active', b.dataset.diff===settings.difficulty));
+  document.querySelectorAll('#keysbar .optbtn').forEach(b=>b.classList.toggle('active', +b.dataset.k===settings.keymode));
+  document.querySelectorAll('#speedbar .optbtn').forEach(b=>b.classList.toggle('active', +b.dataset.s===settings.speedMult));
+  songsEl.innerHTML='';
+  const diff=settings.difficulty, K=settings.keymode;
+  SONGS.forEach((s,i)=>{
+    const notes=s.charts[diff];
+    const holds=notes.filter(n=>n[2]>0).length;
+    const hs=getHS(s.id,diff,K);
+    const el=document.createElement('div'); el.className='song';
+    const bestHtml = hs
+      ? `<span class="badge" style="background:${GRADE_COLORS[hs.grade]}22;color:${GRADE_COLORS[hs.grade]}">${hs.grade}</span><span><b>${hs.score.toLocaleString()}</b> · ${hs.acc.toFixed(2)}% · ${hs.combo}x</span>`
+      : `<span class="song-meta">No score yet</span>`;
+    el.innerHTML=`
+      <div class="song-top">
+        <div class="song-num">${i+1}</div>
+        <div style="flex:1"><div class="song-title">${escapeHtml(s.title)}</div>
+        <div class="song-meta">${fmtTime(s.dur)} · ${notes.length} notes · ${holds} holds</div></div>
+        <button class="practice-btn" title="Practice a section">⏱ Practice</button>
+      </div>
+      <div class="song-best">${bestHtml}</div>`;
+    el.addEventListener('click', ()=> startGame(i));
+    el.querySelector('.practice-btn').addEventListener('click', e=>{ e.stopPropagation(); openPractice(i); });
+    songsEl.appendChild(el);
+  });
+}
+document.getElementById('diffbar').addEventListener('click', e=>{ const b=e.target.closest('.diffbtn'); if(!b)return; settings.difficulty=b.dataset.diff; saveSettings(); renderMenu(); });
+document.getElementById('keysbar').addEventListener('click', e=>{ const b=e.target.closest('.optbtn'); if(!b)return; settings.keymode=+b.dataset.k; editK=settings.keymode; saveSettings(); renderMenu(); });
+document.getElementById('speedbar').addEventListener('click', e=>{ const b=e.target.closest('.optbtn'); if(!b)return; settings.speedMult=+b.dataset.s; saveSettings(); renderMenu(); });
+function escapeHtml(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+function fmtTime(sec){const m=Math.floor(sec/60),s=Math.floor(sec%60);return m+':'+String(s).padStart(2,'0');}
+document.getElementById('settingsBtn').addEventListener('click', ()=>{ editK=settings.keymode; renderSettings(); show('settings'); });
+document.getElementById('creditsBtn').addEventListener('click', ()=>show('credits'));
+document.getElementById('creditsBack').addEventListener('click', ()=>show('menu'));
+
+/* ---------------- PRACTICE MODAL ---------------- */
+let practiceIdx=0;
+const practiceModal=document.getElementById('practiceModal');
+function openPractice(i){
+  practiceIdx=i;
+  document.getElementById('pmTitle').textContent=SONGS[i].title;
+  document.getElementById('pmFrom').value=''; document.getElementById('pmTo').value='';
+  document.getElementById('pmErr').textContent='';
+  practiceModal.classList.add('show');
+}
+function parseTime(str){
+  str=(str||'').trim(); if(!str) return null;
+  if(str.indexOf(':')>=0){ const p=str.split(':'); return (parseInt(p[0],10)||0)*60+(parseFloat(p[1])||0); }
+  const v=parseFloat(str); return isNaN(v)?null:v;
+}
+document.getElementById('pmCancel').addEventListener('click', ()=> practiceModal.classList.remove('show'));
+document.getElementById('pmStart').addEventListener('click', ()=>{
+  const song=SONGS[practiceIdx];
+  let from=parseTime(document.getElementById('pmFrom').value); if(from===null) from=0;
+  let to=parseTime(document.getElementById('pmTo').value); if(to===null) to=song.dur;
+  const err=document.getElementById('pmErr');
+  if(from<0||from>=song.dur){ err.textContent='Start must be between 0 and '+fmtTime(song.dur); return; }
+  if(to<=from){ err.textContent='End must be after start.'; return; }
+  to=Math.min(to,song.dur);
+  practiceModal.classList.remove('show');
+  startGame(practiceIdx,{practice:true, from, to});
+});
+
+/* ---------------- SETTINGS ---------------- */
+const keysRow=document.getElementById('keysRow');
+let bindingIndex=-1;
+function renderSettings(){
+  document.querySelectorAll('#kmEdit .optbtn').forEach(b=>b.classList.toggle('active', +b.dataset.k===editK));
+  const cols=laneColors(editK);
+  keysRow.innerHTML='';
+  settings.binds[editK].forEach((k,i)=>{
+    const wrap=document.createElement('div'); wrap.className='keybind';
+    wrap.innerHTML=`<div class="lbl">${i+1}</div><div class="keycap" style="border-color:${cols[i]}66">${keyLabel(k)}</div>`;
+    wrap.querySelector('.keycap').addEventListener('click', ()=>{ bindingIndex=i; renderSettings();
+      const caps=keysRow.querySelectorAll('.keycap'); caps[i].classList.add('binding'); caps[i].textContent='press…'; });
+    keysRow.appendChild(wrap);
+  });
+  // lane color pickers for the selected key mode
+  const colorsRow=document.getElementById('colorsRow');
+  colorsRow.innerHTML='';
+  cols.forEach((c,i)=>{
+    const wrap=document.createElement('div'); wrap.className='colorpick';
+    wrap.innerHTML=`<div class="lbl">${i+1}</div><input type="color" value="${c}">`;
+    wrap.querySelector('input').addEventListener('input', e=>{
+      if(!settings.laneColors[editK]) settings.laneColors[editK]=[];
+      settings.laneColors[editK][i]=e.target.value;
+      saveSettings();
+      // live-update the keycap borders to match
+      const caps=keysRow.querySelectorAll('.keycap'); if(caps[i]) caps[i].style.borderColor=e.target.value+'66';
+    });
+    colorsRow.appendChild(wrap);
+  });
+  document.getElementById('speed').value=settings.speed; document.getElementById('speedVal').textContent=settings.speed;
+  document.getElementById('offset').value=settings.offset; document.getElementById('offVal').textContent=settings.offset+' ms';
+  document.getElementById('hitToggle').checked=settings.hitsound;
+  // theme controls
+  document.getElementById('accent1').value=settings.accent||cssVar('--accent')||'#3b82f6';
+  document.getElementById('accent2').value=settings.accent2||cssVar('--accent2')||'#ec4899';
+  document.getElementById('noteSize').value=settings.noteSize; document.getElementById('noteSizeVal').textContent=settings.noteSize+'px';
+  document.getElementById('bgDimRange').value=Math.round(settings.bgDim*100); document.getElementById('dimVal').textContent=Math.round(settings.bgDim*100)+'%';
+}
+function keyLabel(k){ if(k===' ')return 'Space'; if(k.startsWith('arrow'))return {arrowleft:'←',arrowright:'→',arrowup:'↑',arrowdown:'↓'}[k]; return k.length===1?k.toUpperCase():k; }
+document.getElementById('kmEdit').addEventListener('click', e=>{ const b=e.target.closest('.optbtn'); if(!b)return; editK=+b.dataset.k; bindingIndex=-1; renderSettings(); });
+document.getElementById('resetColors').addEventListener('click', ()=>{ settings.laneColors[editK]=[]; saveSettings(); renderSettings(); });
+document.getElementById('themePresets').addEventListener('click', e=>{ const b=e.target.closest('.optbtn'); if(!b)return; applyPreset(b.dataset.theme); });
+document.getElementById('accent1').addEventListener('input', e=>{ settings.accent=e.target.value; saveSettings(); applyTheme(); });
+document.getElementById('accent2').addEventListener('input', e=>{ settings.accent2=e.target.value; saveSettings(); applyTheme(); });
+document.getElementById('noteSize').addEventListener('input', e=>{ settings.noteSize=+e.target.value; document.getElementById('noteSizeVal').textContent=settings.noteSize+'px'; saveSettings(); });
+document.getElementById('importBgBtn').addEventListener('click', ()=> document.getElementById('bgInput').click());
+document.getElementById('bgInput').addEventListener('change', e=>{ if(e.target.files[0]) importBg(e.target.files[0]); e.target.value=''; });
+document.getElementById('clearBgBtn').addEventListener('click', clearBg);
+document.getElementById('bgDimRange').addEventListener('input', e=>{ settings.bgDim=+e.target.value/100; document.getElementById('dimVal').textContent=e.target.value+'%'; saveSettings(); applyBg(); });
+document.getElementById('speed').addEventListener('input',e=>{settings.speed=+e.target.value;document.getElementById('speedVal').textContent=settings.speed;saveSettings();});
+document.getElementById('offset').addEventListener('input',e=>{settings.offset=+e.target.value;document.getElementById('offVal').textContent=settings.offset+' ms';saveSettings();});
+document.getElementById('hitToggle').addEventListener('change',e=>{settings.hitsound=e.target.checked;saveSettings();});
+document.getElementById('settingsBack').addEventListener('click',()=>{bindingIndex=-1;show('menu');});
+window.addEventListener('keydown', e=>{
+  if(bindingIndex>=0){ e.preventDefault(); settings.binds[editK][bindingIndex]=e.key.toLowerCase(); bindingIndex=-1; saveSettings(); renderSettings(); }
+}, true);
+
+/* ---------------- HIT SOUND ---------------- */
+let sfxCtx=null;
+function playHit(){
+  if(!settings.hitsound) return;
+  try{
+    sfxCtx=sfxCtx||new (window.AudioContext||window.webkitAudioContext)();
+    if(sfxCtx.state==='suspended') sfxCtx.resume();
+    const t=sfxCtx.currentTime;
+    const o=sfxCtx.createOscillator(), g=sfxCtx.createGain();
+    o.type='triangle'; o.frequency.setValueAtTime(1100,t); o.frequency.exponentialRampToValueAtTime(520,t+0.05);
+    g.gain.setValueAtTime(0.16,t); g.gain.exponentialRampToValueAtTime(0.0006,t+0.07);
+    o.connect(g); g.connect(sfxCtx.destination); o.start(t); o.stop(t+0.08);
+  }catch(e){}
+}
+
+/* ---------------- GAMEPLAY ---------------- */
+const cv=document.getElementById('cv'), ctx2d=cv.getContext('2d');
+const player=document.getElementById('player');
+const hudScore=document.getElementById('score'), hudAcc=document.getElementById('acc');
+const comboEl=document.getElementById('combo'), judgeEl=document.getElementById('judge');
+const modeTag=document.getElementById('modeTag');
+const JUDGEMENTS=[
+  {name:'PERFECT',window:0.040,weight:300,color:'#fde047'},
+  {name:'GREAT',window:0.075,weight:200,color:'#22d3ee'},
+  {name:'GOOD',window:0.110,weight:100,color:'#34d399'},
+  {name:'OK',window:0.150,weight:50,color:'#a78bfa'},
+];
+const MISS_WINDOW=0.180, TAIL_WINDOW=0.160;
+let G=null, rafId=null;
+let keyState=[];
+
+function laneFromRank(rank,K){ return Math.min(K-1, Math.max(0, Math.floor(rank/1000*K))); }
+
+function startGame(idx, opts){
+  opts=opts||{};
+  const song=SONGS[idx];
+  const diff=settings.difficulty, K=settings.keymode, rate=settings.speedMult;
+  const practice=!!opts.practice;
+  const from=practice?Math.max(0,opts.from||0):0;
+  const to=practice?Math.min(song.dur,opts.to||song.dur):song.dur;
+  curK=K; curColors=laneColors(K);
+  show('game'); resizeCanvas();
+  // Jack limiter: pitch rank picks the preferred lane, but if that lane was used
+  // (or is still held) too recently, nudge to the nearest lane that's free enough.
+  // laneFree[i] = the earliest time lane i is available again (note time, or hold end).
+  const notes=[]; const laneFree=new Array(K).fill(-99);
+  const MIN_SAME=0.10;   // min seconds between two notes in the same lane
+  for(const a of song.charts[diff]){
+    const time=a[0];
+    if(practice && (time<from-0.001 || time>to+0.4)) continue;
+    let lane=laneFromRank(a[1],K);
+    if(time - laneFree[lane] < MIN_SAME){
+      let best=-1;
+      for(let d=1; d<K && best<0; d++){
+        const r=lane+d, l=lane-d;
+        if(r<K && time-laneFree[r]>=MIN_SAME) best=r;
+        else if(l>=0 && time-laneFree[l]>=MIN_SAME) best=l;
+      }
+      if(best>=0) lane=best;
+      else continue;   // no free lane -> drop it rather than stack a double on the same side
+    }
+    const end=a[2]||0;
+    laneFree[lane]=end>0?end:time;   // a hold keeps its lane busy until it ends
+    notes.push({time,lane,end,isHold:end>0,judged:false,hit:false,holding:false,tailDone:false,failed:false});
+  }
+  let totalEvents=0; for(const n of notes) totalEvents+=n.isHold?2:1;
+  const travelTime=9.0/settings.speed;
+  const leadReal=Math.max(1.2, travelTime/rate + 0.4);
+  G={ idx, song, diff, K, rate, practice, from, to, notes, travelTime,
+      startPos:from, leadReal, t0:performance.now()/1000+leadReal, playTimer:null,
+      audioStarted:false, paused:false, ended:false, pst:0,
+      score:0, combo:0, maxCombo:0, counts:{PERFECT:0,GREAT:0,GOOD:0,OK:0,MISS:0},
+      weightSum:0, totalWeight:0, totalEvents,
+      hitFx:[], laneFlash:new Array(K).fill(0), judgeTimer:0, comboTimer:0, judgeName:'', judgeColor:'#fff' };
+  keyState=new Array(K).fill(false);
+  document.getElementById('pauseMenu').classList.remove('show');
+  lastIdx=idx;
+  modeTag.innerHTML = `${K}K · <b style="color:${DIFF_COLORS[diff]}">${diff.toUpperCase()}</b>${rate!==1?' · '+rate+'x':''}${practice?' · <b style="color:#22d3ee">PRACTICE '+fmtTime(from)+'–'+fmtTime(to)+'</b>':''}`;
+  document.getElementById('pauseHint').textContent = practice? 'Practice loops · Esc = quit' : 'Esc = pause';
+  player.src=song.file; player.playbackRate=rate;
+  player.preservesPitch=true; player.mozPreservesPitch=true; player.webkitPreservesPitch=true;
+  player.onerror=()=>{ overlayText.textContent='Could not load '+song.file+' — keep it next to this page.'; overlay.classList.add('show'); };
+  scheduleAudio();
+  loop();
+}
+function scheduleAudio(){
+  clearTimeout(G.playTimer);
+  G.playTimer=setTimeout(()=>{
+    if(!G||G.paused) return;
+    try{ player.currentTime=G.startPos; }catch(e){}
+    player.play().then(()=>{G.audioStarted=true;}).catch(()=>{G.audioStarted=true;});
+  }, G.leadReal*1000);
+}
+function songTime(){
+  if(G.audioStarted && !player.paused) return player.currentTime + settings.offset/1000;
+  return G.startPos + (performance.now()/1000 - G.t0)*G.rate + settings.offset/1000;
+}
+function resizeCanvas(){
+  const h=Math.min(window.innerHeight-20,880);
+  const maxLaneW = curK<=2?130 : curK<=4?108 : 76;
+  const laneW=Math.min(maxLaneW, Math.floor((window.innerWidth-40)/curK));
+  cv.width=laneW*curK; cv.height=h; document.getElementById('stage').style.width=cv.width+'px';
+}
+window.addEventListener('resize',()=>{ if(document.getElementById('game').classList.contains('active')) resizeCanvas(); });
+
+function loop(){
+  rafId=requestAnimationFrame(loop);
+  if(!G||G.paused) return;
+  const t=songTime();
+  update(t); draw(t);
+  if(!G.ended){
+    if(G.practice){ if(t>=G.to) practiceLoop(); }
+    else if(t>G.song.dur+1.0) endGame();
+  }
+}
+function practiceLoop(){
+  for(const n of G.notes){ n.judged=false;n.hit=false;n.holding=false;n.tailDone=false;n.failed=false; }
+  G.score=0;G.combo=0;G.maxCombo=0;G.counts={PERFECT:0,GREAT:0,GOOD:0,OK:0,MISS:0};G.weightSum=0;G.totalWeight=0;
+  G.hitFx=[]; keyState.fill(false);
+  G.audioStarted=false;
+  try{ if(!player.paused) player.pause(); }catch(e){}
+  G.t0=performance.now()/1000+G.leadReal;
+  scheduleAudio();
+}
+function update(t){
+  for(const n of G.notes){
+    if(n.isHold){
+      if(!n.judged && t-n.time>MISS_WINDOW){ n.judged=true; n.failed=true; registerJudge('MISS',n.lane); }
+      if(n.failed && !n.tailDone){ n.tailDone=true; registerJudge('MISS',n.lane); }
+      if(n.holding && !n.tailDone && t>=n.end){ n.holding=false; n.tailDone=true; registerJudge('PERFECT',n.lane,true); }
+    } else if(!n.judged && t-n.time>MISS_WINDOW){ n.judged=true; registerJudge('MISS',n.lane); }
+  }
+  if(G.judgeTimer>0) G.judgeTimer-=1/60;
+  if(G.comboTimer>0) G.comboTimer-=1/60;
+  for(const fx of G.hitFx) fx.life-=0.06;
+  G.hitFx=G.hitFx.filter(f=>f.life>0);
+  for(let i=0;i<G.laneFlash.length;i++) if(G.laneFlash[i]>0) G.laneFlash[i]-=0.08;
+}
+function yFor(nt,t,hitY){ return hitY*(1-(nt-t)/G.travelTime); }
+function draw(t){
+  const W=cv.width,H=cv.height,laneW=W/curK,hitY=H-90,noteH=settings.noteSize||20;
+  const pad=Math.max(5,Math.min(8,laneW*0.09));
+  ctx2d.clearRect(0,0,W,H);
+  for(let i=0;i<curK;i++){
+    const x=i*laneW;
+    if(G.laneFlash[i]>0){ ctx2d.fillStyle=hexA(curColors[i],0.10*G.laneFlash[i]); ctx2d.fillRect(x,0,laneW,H); }
+    ctx2d.strokeStyle='#ffffff10'; ctx2d.lineWidth=1; ctx2d.beginPath(); ctx2d.moveTo(x,0); ctx2d.lineTo(x,H); ctx2d.stroke();
+  }
+  ctx2d.fillStyle='#ffffff18'; ctx2d.fillRect(0,hitY,W,3);
+  for(let i=0;i<curK;i++){
+    const x=i*laneW,pressed=keyState[i];
+    ctx2d.strokeStyle=curColors[i]; ctx2d.lineWidth=pressed?4:2; ctx2d.globalAlpha=pressed?1:0.55;
+    roundRect(x+pad,hitY-6,laneW-2*pad,30,6); ctx2d.stroke(); ctx2d.globalAlpha=1;
+  }
+  for(const n of G.notes){
+    if(!n.isHold||n.tailDone) continue;
+    if(n.time-t>G.travelTime) continue;
+    let hy=yFor(n.time,t,hitY), ty=yFor(n.end,t,hitY);
+    if(n.holding) hy=hitY;
+    if(ty>hitY+30) continue;
+    const x=n.lane*laneW, col=curColors[n.lane];
+    ctx2d.fillStyle=hexA(col,0.30); ctx2d.strokeStyle=hexA(col,0.55); ctx2d.lineWidth=2;
+    roundRect(x+pad+8, Math.min(ty,hy), laneW-2*(pad+8), Math.abs(hy-ty)||2, 6); ctx2d.fill(); ctx2d.stroke();
+  }
+  for(const n of G.notes){
+    if(n.isHold ? n.judged : (n.judged&&n.hit)){ if(!(n.isHold&&n.holding)) continue; }
+    if(n.isHold&&n.tailDone) continue;
+    const dt=n.time-t;
+    if(dt>G.travelTime) continue;
+    if(dt<-MISS_WINDOW-0.1 && !(n.isHold&&n.holding)) continue;
+    let y=yFor(n.time,t,hitY); if(n.isHold&&n.holding) y=hitY;
+    const x=n.lane*laneW, col=curColors[n.lane];
+    ctx2d.fillStyle=col; ctx2d.shadowColor=col; ctx2d.shadowBlur=14;
+    roundRect(x+pad,y-noteH/2,laneW-2*pad,noteH,5); ctx2d.fill(); ctx2d.shadowBlur=0;
+  }
+  for(const fx of G.hitFx){
+    const x=fx.lane*laneW; ctx2d.globalAlpha=fx.life; ctx2d.fillStyle=fx.color;
+    const s=(1-fx.life)*40; roundRect(x+pad-s/2,hitY-6-s/2,laneW-2*pad+s,30+s,8); ctx2d.fill(); ctx2d.globalAlpha=1;
+  }
+  hudScore.textContent=Math.round(G.score).toLocaleString();
+  hudAcc.textContent=accuracy().toFixed(2)+'%';
+  if(G.combo>1&&G.comboTimer>0){ comboEl.textContent=G.combo+'x'; comboEl.style.opacity=Math.min(1,G.comboTimer*3);} else comboEl.style.opacity=0;
+  if(G.judgeTimer>0){ judgeEl.textContent=G.judgeName; judgeEl.style.color=G.judgeColor; judgeEl.style.opacity=Math.min(1,G.judgeTimer*4);} else judgeEl.style.opacity=0;
+}
+function roundRect(x,y,w,h,r){ r=Math.min(r,h/2,w/2); ctx2d.beginPath(); ctx2d.moveTo(x+r,y);
+  ctx2d.arcTo(x+w,y,x+w,y+h,r); ctx2d.arcTo(x+w,y+h,x,y+h,r); ctx2d.arcTo(x,y+h,x,y,r); ctx2d.arcTo(x,y,x+w,y,r); ctx2d.closePath(); }
+function hexA(hex,a){ const n=parseInt(hex.slice(1),16); return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`; }
+
+window.addEventListener('keydown', e=>{
+  if(bindingIndex>=0) return;
+  const k=e.key.toLowerCase();
+  if(k==='escape' && G && document.getElementById('game').classList.contains('active')){
+    if(G.practice){ stopGame(); renderMenu(); show('menu'); } else togglePause(); return;
+  }
+  if(!G||G.paused||G.ended) return;
+  const lane=settings.binds[G.K].indexOf(k); if(lane<0) return;
+  e.preventDefault();
+  if(keyState[lane]) return;
+  keyState[lane]=true; G.laneFlash[lane]=1;
+  tryHit(lane);
+}, false);
+window.addEventListener('keyup', e=>{
+  if(!G) return;
+  const lane=settings.binds[G.K].indexOf(e.key.toLowerCase()); if(lane<0) return;
+  keyState[lane]=false;
+  if(G.paused||G.ended) return;
+  releaseHold(lane);
+}, false);
+
+function tryHit(lane){
+  const t=songTime();
+  let best=null,bestDt=999;
+  for(const n of G.notes){ if(n.lane!==lane||n.judged) continue; const dt=Math.abs(n.time-t); if(dt<bestDt){bestDt=dt;best=n;} }
+  if(best && bestDt<=MISS_WINDOW){
+    let j=JUDGEMENTS[JUDGEMENTS.length-1];
+    for(const jd of JUDGEMENTS){ if(bestDt<=jd.window){ j=jd; break; } }
+    best.judged=true; best.hit=true; registerJudge(j.name,lane);
+    if(best.isHold) best.holding=true;
+  }
+}
+function releaseHold(lane){
+  const t=songTime();
+  for(const n of G.notes){
+    if(n.lane!==lane||!n.isHold||!n.holding||n.tailDone) continue;
+    n.holding=false; n.tailDone=true;
+    if(n.end-t<=TAIL_WINDOW){
+      const dt=Math.abs(n.end-t); let j=JUDGEMENTS[JUDGEMENTS.length-1];
+      for(const jd of JUDGEMENTS){ if(dt<=jd.window){ j=jd; break; } }
+      registerJudge(j.name,lane,true);
+    } else { n.failed=true; registerJudge('MISS',lane); }
+  }
+}
+function registerJudge(name,lane,isTail){
+  G.counts[name]=(G.counts[name]||0)+1;
+  if(name==='MISS'){ G.combo=0; G.totalWeight+=300; G.judgeName='MISS'; G.judgeColor='#f87171'; }
+  else{
+    const jd=JUDGEMENTS.find(j=>j.name===name);
+    G.combo++; G.maxCombo=Math.max(G.maxCombo,G.combo);
+    G.score+=jd.weight*(1+Math.min(G.combo,200)/200);
+    G.weightSum+=jd.weight; G.totalWeight+=300;
+    G.judgeName=name; G.judgeColor=jd.color;
+    G.hitFx.push({lane,color:jd.color,life:1}); G.laneFlash[lane]=1;
+    playHit();
+  }
+  G.judgeTimer=0.5; G.comboTimer=0.8;
+}
+function accuracy(){ return G.totalWeight? (G.weightSum/G.totalWeight*100):100; }
+
+function togglePause(){
+  if(!G) return;
+  if(!G.paused){ G.paused=true; if(G.audioStarted&&!player.paused) player.pause(); else G.pst=songTime(); document.getElementById('pauseMenu').classList.add('show'); }
+  else resumeGame();
+}
+function resumeGame(){
+  G.paused=false; document.getElementById('pauseMenu').classList.remove('show');
+  if(G.audioStarted){ player.play().catch(()=>{}); }
+  else { G.t0=performance.now()/1000 - (G.pst - G.startPos - settings.offset/1000)/G.rate; }
+}
+document.getElementById('resumeBtn').addEventListener('click',resumeGame);
+document.getElementById('restartBtn').addEventListener('click',()=>{ const i=G.idx; stopGame(); startGame(i); });
+document.getElementById('quitBtn').addEventListener('click',()=>{ stopGame(); renderMenu(); show('menu'); });
+function stopGame(){
+  if(rafId) cancelAnimationFrame(rafId), rafId=null;
+  if(G&&G.playTimer) clearTimeout(G.playTimer);
+  try{ player.pause(); player.playbackRate=1; }catch(e){}
+  G=null;
+}
+player.addEventListener('ended', ()=>{ if(!G||G.ended) return; if(G.practice) practiceLoop(); else endGame(); });
+function endGame(){
+  if(!G||G.ended) return;
+  for(const n of G.notes){
+    if(n.isHold){ if(!n.judged){n.judged=true;n.failed=true;registerJudge('MISS',n.lane);} if(!n.tailDone){n.tailDone=true;registerJudge('MISS',n.lane);} }
+    else if(!n.judged){ n.judged=true; registerJudge('MISS',n.lane); }
+  }
+  G.ended=true;
+  const data={ idx:G.idx, id:G.song.id, diff:G.diff, K:G.K, rate:G.rate, title:G.song.title, score:Math.round(G.score), acc:accuracy(), combo:G.maxCombo, counts:Object.assign({},G.counts) };
+  setTimeout(()=>{ stopGame(); showResults(data); }, 600);
+}
+function showResults(d){
+  show('results');
+  document.getElementById('songTitle').innerHTML=escapeHtml(d.title)+` · <b style="color:${DIFF_COLORS[d.diff]}">${d.diff.toUpperCase()}</b> · ${d.K}K`;
+  document.getElementById('resAcc').textContent=d.acc.toFixed(2)+'%';
+  const grade=gradeFor(d.acc);
+  const gt=document.getElementById('gradeText'); gt.textContent=grade; gt.style.color=GRADE_COLORS[grade];
+  const prev=getHS(d.id,d.diff,d.K);
+  const saved=d.rate===1;
+  const isBest=saved && (!prev||d.score>prev.score);
+  if(isBest) setHS(d.id,d.diff,d.K,{score:d.score,acc:d.acc,grade,combo:d.combo});
+  const nb=document.getElementById('newBest');
+  if(!saved){ nb.style.display='block'; nb.textContent='SCORE NOT SAVED · '+d.rate+'x'; nb.style.color='var(--muted)'; nb.style.animation='none'; }
+  else { nb.textContent='★ NEW BEST ★'; nb.style.color=''; nb.style.animation=''; nb.style.display=isBest?'block':'none'; }
+  const c=d.counts;
+  const bestLine=(!isBest&&prev)?`<div><span>Best</span><b>${prev.score.toLocaleString()} (${prev.acc.toFixed(2)}%)</b></div>`:'';
+  document.getElementById('resGrid').innerHTML=`
+    <div><span>Score</span><b>${d.score.toLocaleString()}</b></div>
+    <div><span>Max combo</span><b>${d.combo}x</b></div>
+    <div><span style="color:#fde047">Perfect</span><b>${c.PERFECT||0}</b></div>
+    <div><span style="color:#22d3ee">Great</span><b>${c.GREAT||0}</b></div>
+    <div><span style="color:#34d399">Good</span><b>${c.GOOD||0}</b></div>
+    <div><span style="color:#a78bfa">OK</span><b>${c.OK||0}</b></div>
+    <div><span style="color:#f87171">Miss</span><b>${c.MISS||0}</b></div>
+    ${bestLine||'<div><span>Notes</span><b>'+((c.PERFECT||0)+(c.GREAT||0)+(c.GOOD||0)+(c.OK||0)+(c.MISS||0))+'</b></div>'}`;
+  document.getElementById('resRetry').onclick=()=> startGame(d.idx);
+  document.getElementById('resMenu').onclick=()=>{ renderMenu(); show('menu'); };
+}
+
+/* ---------------- BOOT ---------------- */
+const overlay=document.getElementById('overlay'), overlayText=document.getElementById('overlayText');
+curK=settings.keymode; curColors=laneColors(curK); editK=settings.keymode;
+applyTheme(); loadBg();
+renderMenu();
+</script>
+</body>
+</html>
