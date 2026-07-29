@@ -10,15 +10,15 @@ No install, no accounts, nothing to download. Default keys are `D` `F` `J` `K` â
 
 Every track is used with its artist's permission. Please go support them.
 
-| Track | Artist | Source | License |
-|---|---|---|---|
-| Armageddon | Zodin | [Newgrounds](https://www.newgrounds.com/audio/listen/548713) | Free to use with credit |
-| Grizzly (WIP) | Envy | [Newgrounds](https://www.newgrounds.com/audio/listen/467065) | Free to use with credit |
-| Silent Hill (Dubstep) | Aydin-Jewelz123 | [Newgrounds](https://www.newgrounds.com/audio/listen/386900) | Free to use with credit |
-| {Rose} | cornandbeans | [Newgrounds](https://www.newgrounds.com/audio/listen/65711) | Free to use with credit |
-| Nostalgia (original mix) | Acid-Notation | [YouTube](https://www.youtube.com/watch?v=dtpzCffp_y8) | Free to use with credit and source link |
-| Turbo Strawberry | Acid-Notation | [YouTube](https://www.youtube.com/watch?v=5OB-PHV_3Zo) | Free to use with credit and source link |
-| Heaven (remix) | Envy | [Newgrounds](https://www.newgrounds.com/audio/listen/105753) | Free to use with credit |
+| Track | Artist | Source |
+|---|---|---|
+| Armageddon | Zodin | [Newgrounds](https://www.newgrounds.com/audio/listen/548713) |
+| Grizzly (WIP) | Envy | [Newgrounds](https://www.newgrounds.com/audio/listen/467065) |
+| Silent Hill (Dubstep) | Aydin-Jewelz123 | [Newgrounds](https://www.newgrounds.com/audio/listen/386900) |
+| {Rose} | cornandbeans | [Newgrounds](https://www.newgrounds.com/audio/listen/65711) |
+| Nostalgia (original mix) | Acid-Notation | [YouTube](https://www.youtube.com/watch?v=dtpzCffp_y8) |
+| Turbo Strawberry | Acid-Notation | [YouTube](https://www.youtube.com/watch?v=5OB-PHV_3Zo) |
+| Heaven (remix) | Envy | [Newgrounds](https://www.newgrounds.com/audio/listen/105753) |
 
 If you're one of these artists and you'd like your track removed, open an issue and it comes down the same day.
 
