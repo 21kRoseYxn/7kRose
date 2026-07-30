@@ -11,11 +11,11 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="7kRose — an osu! fangame">
 <meta property="og:description" content="A browser rhythm game in the style of osu!mania. Seven tracks, three difficulties, rebindable keys. Nothing to install.">
-<meta property="og:url" content="https://21kroseyxn.github.io/7kRose-an-osu-inspired-fangame/">
-<meta property="og:image" content="https://21kroseyxn.github.io/7kRose-an-osu-inspired-fangame/7kRose-banner-16x9.png">
+<meta property="og:url" content="https://21kroseyxn.github.io/7kRose/">
+<meta property="og:image" content="https://21kroseyxn.github.io/7kRose/7kRose-banner-16x9.png">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="7kRose — an osu! fangame">
-<meta name="twitter:image" content="https://21kroseyxn.github.io/7kRose-an-osu-inspired-fangame/7kRose-banner-16x9.png">
+<meta name="twitter:image" content="https://21kroseyxn.github.io/7kRose/7kRose-banner-16x9.png">
 
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b0b16'/%3E%3Crect x='5' y='6' width='4' height='20' rx='2' fill='%233b82f6'/%3E%3Crect x='11' y='6' width='4' height='20' rx='2' fill='%23ec4899'/%3E%3Crect x='17' y='6' width='4' height='20' rx='2' fill='%233b82f6'/%3E%3Crect x='23' y='6' width='4' height='20' rx='2' fill='%23ec4899'/%3E%3Crect x='3' y='22' width='26' height='3' rx='1.5' fill='%23ffffff'/%3E%3C/svg%3E">
 <link rel="stylesheet" href="style.css">
@@ -77,7 +77,7 @@
     </div>
     <div class="field">
       <label>Audio offset <span id="offVal"></span></label>
-      <input type="range" id="offset" min="-150" max="150" step="5">
+      <input type="range" id="offset" min="-400" max="400" step="5">
       <span class="mini">If notes feel early/late, nudge this. + = notes later.</span>
     </div>
     <div class="field"><div class="toggle-row"><label for="hitToggle">Hit sounds</label><input type="checkbox" id="hitToggle"></div></div>
@@ -183,6 +183,8 @@
 <div id="game" class="screen">
   <div id="stage">
     <canvas id="cv"></canvas>
+    <div id="touchLanes"></div>
+    <button id="mobilePause" aria-label="Pause">&#9208;</button>
     <div id="hud"><div id="score">0</div><div id="acc">100.00%</div></div>
     <div id="combo"></div>
     <div id="judge"></div>
@@ -244,6 +246,12 @@
 const SONGS = window.SONGS || [];
 
 const DIFF_COLORS={easy:'#34d399',medium:'#fbbf24',hard:'#f87171'};
+
+/* Touch devices get a taller gap under the receptor. At the desktop value of
+   90px the hit line sits right where your thumbs rest, so you end up covering
+   the notes you are trying to read. */
+const IS_TOUCH = window.matchMedia('(pointer: coarse)').matches || ('ontouchstart' in window);
+function receptorOffset(H){ return IS_TOUCH ? Math.max(110, Math.round(H*0.24)) : 90; }
 // Default lane color for key mode K, lane i — read from the CSS variable --laneK-i in style.css.
 function defaultLaneColor(K,i){
   const v=getComputedStyle(document.documentElement).getPropertyValue('--lane'+K+'-'+i).trim();
@@ -555,10 +563,13 @@ function songTime(){
   return G.startPos + (performance.now()/1000 - G.t0)*G.rate + settings.offset/1000;
 }
 function resizeCanvas(){
-  const h=Math.min(window.innerHeight-20,880);
-  const maxLaneW = curK<=2?130 : curK<=4?108 : 76;
-  const laneW=Math.min(maxLaneW, Math.floor((window.innerWidth-40)/curK));
+  const h=IS_TOUCH ? window.innerHeight : Math.min(window.innerHeight-20,880);
+  // on a phone the lanes should fill the screen; on desktop they stay capped
+  const maxLaneW = IS_TOUCH ? 999 : (curK<=2?130 : curK<=4?108 : 76);
+  const margin = IS_TOUCH ? 4 : 40;
+  const laneW=Math.min(maxLaneW, Math.floor((window.innerWidth-margin)/curK));
   cv.width=laneW*curK; cv.height=h; document.getElementById('stage').style.width=cv.width+'px';
+  buildTouchLanes();
 }
 window.addEventListener('resize',()=>{ if(document.getElementById('game').classList.contains('active')) resizeCanvas(); });
 
@@ -597,7 +608,7 @@ function update(t){
 }
 function yFor(nt,t,hitY){ return hitY*(1-(nt-t)/G.travelTime); }
 function draw(t){
-  const W=cv.width,H=cv.height,laneW=W/curK,hitY=H-90,noteH=settings.noteSize||20;
+  const W=cv.width,H=cv.height,laneW=W/curK,hitY=H-receptorOffset(H),noteH=settings.noteSize||20;
   const pad=Math.max(5,Math.min(8,laneW*0.09));
   ctx2d.clearRect(0,0,W,H);
   for(let i=0;i<curK;i++){
@@ -645,6 +656,21 @@ function roundRect(x,y,w,h,r){ r=Math.min(r,h/2,w/2); ctx2d.beginPath(); ctx2d.m
   ctx2d.arcTo(x+w,y,x+w,y+h,r); ctx2d.arcTo(x+w,y+h,x,y+h,r); ctx2d.arcTo(x,y+h,x,y,r); ctx2d.arcTo(x,y,x+w,y,r); ctx2d.closePath(); }
 function hexA(hex,a){ const n=parseInt(hex.slice(1),16); return `rgba(${n>>16&255},${n>>8&255},${n&255},${a})`; }
 
+/* Keyboard and touch both funnel through these two, so a lane behaves
+   identically however it was pressed. */
+function pressLane(lane){
+  if(keyState[lane]) return;
+  keyState[lane]=true; G.laneFlash[lane]=1;
+  setPadOn(lane,true);
+  tryHit(lane);
+}
+function releaseLane(lane){
+  keyState[lane]=false;
+  setPadOn(lane,false);
+  if(G.paused||G.ended) return;
+  releaseHold(lane);
+}
+
 window.addEventListener('keydown', e=>{
   if(bindingIndex>=0) return;
   const k=e.key.toLowerCase();
@@ -654,17 +680,89 @@ window.addEventListener('keydown', e=>{
   if(!G||G.paused||G.ended) return;
   const lane=settings.binds[G.K].indexOf(k); if(lane<0) return;
   e.preventDefault();
-  if(keyState[lane]) return;
-  keyState[lane]=true; G.laneFlash[lane]=1;
-  tryHit(lane);
+  pressLane(lane);
 }, false);
 window.addEventListener('keyup', e=>{
   if(!G) return;
   const lane=settings.binds[G.K].indexOf(e.key.toLowerCase()); if(lane<0) return;
-  keyState[lane]=false;
-  if(G.paused||G.ended) return;
-  releaseHold(lane);
+  releaseLane(lane);
 }, false);
+
+/* ---------------- Touch input ----------------
+   Every finger is tracked separately by Touch.identifier, because a rhythm
+   game needs two or three lanes held at once and the browser reports those as
+   one touch list, not as separate events. A lane only releases when the last
+   finger on it lifts, and dragging across lanes hands off cleanly. */
+const touchLaneOf = new Map();          // Touch.identifier -> lane
+const fingersOn = new Array(8).fill(0); // fingers currently on each lane
+
+function laneAtX(clientX){
+  const r=cv.getBoundingClientRect();
+  const lane=Math.floor((clientX-r.left)/(r.width/curK));
+  return Math.max(0, Math.min(curK-1, lane));
+}
+function setPadOn(lane,on){
+  const pad=document.querySelector('#touchLanes .touchLane[data-lane="'+lane+'"]');
+  if(pad) pad.classList.toggle('on',!!on);
+}
+function touchPress(lane){ if(++fingersOn[lane]===1) pressLane(lane); }
+function touchRelease(lane){ if(--fingersOn[lane]<=0){ fingersOn[lane]=0; releaseLane(lane); } }
+
+function buildTouchLanes(){
+  const wrap=document.getElementById('touchLanes');
+  if(!wrap) return;
+  wrap.innerHTML='';
+  if(!IS_TOUCH) return;
+  wrap.style.height=receptorOffset(cv.height)+'px';
+  for(let i=0;i<curK;i++){
+    const d=document.createElement('div');
+    d.className='touchLane'; d.dataset.lane=i;
+    const c=(curColors&&curColors[i])||'#3b82f6';
+    d.style.background='linear-gradient(to bottom,'+hexA(c,0)+','+hexA(c,0.22)+')';
+    d.style.setProperty('--pad',c);
+    wrap.appendChild(d);
+  }
+}
+
+const stageEl=document.getElementById('stage');
+stageEl.addEventListener('touchstart', e=>{
+  if(!G||G.paused||G.ended) return;
+  e.preventDefault();
+  for(const t of e.changedTouches){
+    const lane=laneAtX(t.clientX);
+    touchLaneOf.set(t.identifier,lane);
+    touchPress(lane);
+  }
+},{passive:false});
+stageEl.addEventListener('touchmove', e=>{
+  if(!G||G.paused||G.ended) return;
+  e.preventDefault();
+  for(const t of e.changedTouches){
+    if(!touchLaneOf.has(t.identifier)) continue;
+    const prev=touchLaneOf.get(t.identifier), lane=laneAtX(t.clientX);
+    if(lane!==prev){ touchRelease(prev); touchLaneOf.set(t.identifier,lane); touchPress(lane); }
+  }
+},{passive:false});
+function endTouch(e){
+  for(const t of e.changedTouches){
+    if(!touchLaneOf.has(t.identifier)) continue;
+    touchRelease(touchLaneOf.get(t.identifier));
+    touchLaneOf.delete(t.identifier);
+  }
+}
+stageEl.addEventListener('touchend',endTouch,{passive:false});
+stageEl.addEventListener('touchcancel',endTouch,{passive:false});
+
+/* Phones have no Esc key, so pausing needs a button. */
+document.getElementById('mobilePause').addEventListener('click', e=>{
+  e.stopPropagation();
+  if(!G||G.ended) return;
+  if(G.practice){ stopGame(); renderMenu(); show('menu'); } else togglePause();
+});
+if(IS_TOUCH){
+  document.getElementById('mobilePause').classList.add('show');
+  document.getElementById('pauseHint').textContent='Tap the lanes to play';
+}
 
 function tryHit(lane){
   const t=songTime();

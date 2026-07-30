@@ -2,9 +2,9 @@
 
 A browser-based rhythm game in the style of osu!mania. Four-key top-scroll, seven tracks, three difficulties each, hold notes, rebindable keys, four themes, and a practice mode that loops any section of a song.
 
-**[Play it here](https://21kroseyxn.github.io/7kRose-an-osu-inspired-fangame/)**
+**[Play it here](https://21kroseyxn.github.io/7kRose/)**
 
-No install, no accounts, nothing to download. Default keys are `D` `F` `J` `K` — rebind them in Settings. `Esc` pauses.
+No install, no accounts, nothing to download. On desktop the default keys are `D` `F` `J` `K` — rebind them in Settings — and `Esc` pauses. On a phone, tap the lanes.
 
 ## Music credits
 
