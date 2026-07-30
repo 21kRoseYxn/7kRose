@@ -543,7 +543,9 @@ function startGame(idx, opts){
   document.getElementById('pauseMenu').classList.remove('show');
   lastIdx=idx;
   modeTag.innerHTML = `${K}K · <b style="color:${DIFF_COLORS[diff]}">${diff.toUpperCase()}</b>${rate!==1?' · '+rate+'x':''}${practice?' · <b style="color:#22d3ee">PRACTICE '+fmtTime(from)+'–'+fmtTime(to)+'</b>':''}`;
-  document.getElementById('pauseHint').textContent = practice? 'Practice loops · Esc = quit' : 'Esc = pause';
+  document.getElementById('pauseHint').textContent = IS_TOUCH
+    ? (practice? 'Practice loops · tap \u23F8 to quit' : 'Tap the lanes to play')
+    : (practice? 'Practice loops · Esc = quit' : 'Esc = pause');
   player.src=song.file; player.playbackRate=rate;
   player.preservesPitch=true; player.mozPreservesPitch=true; player.webkitPreservesPitch=true;
   player.onerror=()=>{ overlayText.textContent='Could not load '+song.file+' — keep it next to this page.'; overlay.classList.add('show'); };
@@ -696,6 +698,11 @@ window.addEventListener('keyup', e=>{
 const touchLaneOf = new Map();          // Touch.identifier -> lane
 const fingersOn = new Array(8).fill(0); // fingers currently on each lane
 
+/* Taps on UI sitting inside #stage (the pause button) must not be swallowed
+   by the lane handlers - preventDefault() on touchstart also cancels the
+   synthetic click the button is waiting for. */
+function onUI(e){ return e.target && e.target.closest && e.target.closest('#mobilePause'); }
+
 function laneAtX(clientX){
   const r=cv.getBoundingClientRect();
   const lane=Math.floor((clientX-r.left)/(r.width/curK));
@@ -726,6 +733,7 @@ function buildTouchLanes(){
 
 const stageEl=document.getElementById('stage');
 stageEl.addEventListener('touchstart', e=>{
+  if(onUI(e)) return;
   if(!G||G.paused||G.ended) return;
   e.preventDefault();
   for(const t of e.changedTouches){
@@ -735,6 +743,7 @@ stageEl.addEventListener('touchstart', e=>{
   }
 },{passive:false});
 stageEl.addEventListener('touchmove', e=>{
+  if(onUI(e)) return;
   if(!G||G.paused||G.ended) return;
   e.preventDefault();
   for(const t of e.changedTouches){
@@ -744,6 +753,7 @@ stageEl.addEventListener('touchmove', e=>{
   }
 },{passive:false});
 function endTouch(e){
+  if(onUI(e)) return;
   for(const t of e.changedTouches){
     if(!touchLaneOf.has(t.identifier)) continue;
     touchRelease(touchLaneOf.get(t.identifier));
@@ -754,15 +764,16 @@ stageEl.addEventListener('touchend',endTouch,{passive:false});
 stageEl.addEventListener('touchcancel',endTouch,{passive:false});
 
 /* Phones have no Esc key, so pausing needs a button. */
-document.getElementById('mobilePause').addEventListener('click', e=>{
-  e.stopPropagation();
+function doPause(){
   if(!G||G.ended) return;
   if(G.practice){ stopGame(); renderMenu(); show('menu'); } else togglePause();
-});
-if(IS_TOUCH){
-  document.getElementById('mobilePause').classList.add('show');
-  document.getElementById('pauseHint').textContent='Tap the lanes to play';
 }
+const mpBtn=document.getElementById('mobilePause');
+mpBtn.addEventListener('click', e=>{ e.stopPropagation(); doPause(); });
+mpBtn.addEventListener('touchstart', e=>{
+  e.preventDefault(); e.stopPropagation(); doPause();
+},{passive:false});
+if(IS_TOUCH) mpBtn.classList.add('show');
 
 function tryHit(lane){
   const t=songTime();
