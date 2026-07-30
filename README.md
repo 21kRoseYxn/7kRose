@@ -20,7 +20,7 @@ Every track is used with its artist's permission. Please go support them.
 | Turbo Strawberry | Acid-Notation | [YouTube](https://www.youtube.com/watch?v=5OB-PHV_3Zo) |
 | Heaven (remix) | Envy | [Newgrounds](https://www.newgrounds.com/audio/listen/105753) |
 
-If you're one of these artists and you'd like your track removed, open an issue and it comes down the same day.
+If you're one of these artists and you'd like your track removed, message me on Discord @sarcasm\_zone and I will promptly take it down
 
 ## chartgen.py — the chart generator
 
